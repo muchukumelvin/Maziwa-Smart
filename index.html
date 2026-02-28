@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maziwa Smart · Dairy Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- AUTH SCREEN (visible by default) -->
+    <div id="authContainer" class="auth-container">
+        <div class="auth-card">
+            <h1 class="logo">🐄 Maziwa Smart</h1>
+            <p class="tagline">modern dairy farm management</p>
+
+            <!-- Login Form -->
+            <div class="form-section">
+                <h3>Login</h3>
+                <input type="tel" id="loginPhone" placeholder="Phone number" class="modern-input">
+                <input type="password" id="loginPassword" placeholder="Password" class="modern-input">
+                <button class="btn primary-btn" id="loginBtn">Log in</button>
+            </div>
+
+            <div class="divider"><span>or</span></div>
+
+            <!-- Sign Up Form -->
+            <div class="form-section">
+                <h3>Create account</h3>
+                <input type="text" id="farmName" placeholder="Farm name" class="modern-input">
+                <input type="tel" id="signupPhone" placeholder="Phone number" class="modern-input">
+                <input type="password" id="signupPassword" placeholder="Password" class="modern-input">
+                <select id="language" class="modern-input">
+                    <option value="en">English</option>
+                    <option value="sw">Kiswahili</option>
+                </select>
+                <button class="btn secondary-btn" id="signupBtn">Sign up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP (hidden until login) -->
+    <div id="appContainer" class="app-container hidden">
+        <!-- Header with logout -->
+        <header class="app-header">
+            <span class="farm-name" id="displayFarmName">Maziwa Smart</span>
+            <button class="logout-btn" id="logoutBtn">🚪 logout</button>
+        </header>
+
+        <!-- Dynamic content panels -->
+        <div class="content-area" id="contentArea">
+            <!-- Dashboard panel -->
+            <div id="dashboardSection" class="panel active-panel">
+                <h2 class="panel-title">📊 Dashboard</h2>
+                <div class="cards-grid">
+                    <div class="stat-card"><span class="stat-label">Total cows</span><span class="stat-value" id="totalCows">0</span></div>
+                    <div class="stat-card"><span class="stat-label">Milk (litres)</span><span class="stat-value" id="totalMilk">0</span></div>
+                    <div class="stat-card"><span class="stat-label">Feed cost (TZS)</span><span class="stat-value" id="totalFeedCost">0</span></div>
+                    <div class="stat-card"><span class="stat-label">Vaccines</span><span class="stat-value" id="totalVaccines">0</span></div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="farmPieChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Cows panel -->
+            <div id="cowsSection" class="panel">
+                <h2 class="panel-title">🐮 Cow registration</h2>
+                <form id="cowForm" class="modern-form">
+                    <input type="text" id="cowName" placeholder="Cow name / ID" class="modern-input" required>
+                    <input type="text" id="cowBreed" placeholder="Breed" class="modern-input" required>
+                    <input type="number" id="cowAge" placeholder="Age (months)" class="modern-input" required>
+                    <button type="submit" class="btn primary-btn">Add cow</button>
+                </form>
+                <h3>Registered cows</h3>
+                <ul class="list" id="cowList"></ul>
+            </div>
+
+            <!-- Feed panel -->
+            <div id="feedSection" class="panel">
+                <h2 class="panel-title">🌾 Feed tracking</h2>
+                <form id="feedForm" class="modern-form">
+                    <input type="text" id="feedType" placeholder="Feed type (e.g. hay)" class="modern-input" required>
+                    <input type="number" id="feedCost" placeholder="Cost (TZS)" class="modern-input" required>
+                    <button type="submit" class="btn primary-btn">Add feed</button>
+                </form>
+                <h3>Feed history</h3>
+                <ul class="list" id="feedList"></ul>
+            </div>
+
+            <!-- Vaccine panel -->
+            <div id="vaccineSection" class="panel">
+                <h2 class="panel-title">💉 Vaccine records</h2>
+                <form id="vaccineForm" class="modern-form">
+                    <input type="text" id="vaccineCow" placeholder="Cow name / ID" class="modern-input" required>
+                    <input type="text" id="vaccineName" placeholder="Vaccine name" class="modern-input" required>
+                    <input type="date" id="vaccineDate" class="modern-input" required>
+                    <button type="submit" class="btn primary-btn">Add vaccine</button>
+                </form>
+                <h3>Vaccine history</h3>
+                <ul class="list" id="vaccineList"></ul>
+            </div>
+
+            <!-- Milk panel -->
+            <div id="milkSection" class="panel">
+                <h2 class="panel-title">🥛 Milk logging</h2>
+                <form id="milkForm" class="modern-form">
+                    <input type="text" id="milkCow" placeholder="Cow name / ID" class="modern-input" required>
+                    <input type="number" step="0.1" id="milkLitres" placeholder="Litres" class="modern-input" required>
+                    <input type="date" id="milkDate" class="modern-input" required>
+                    <button type="submit" class="btn primary-btn">Add milk record</button>
+                </form>
+                <h3>Milk history</h3>
+                <ul class="list" id="milkList"></ul>
+            </div>
+        </div>
+
+        <!-- Bottom navigation (fixed) -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-tab="dashboard">📊 Dashboard</button>
+            <button class="nav-item" data-tab="cows">🐮 Cows</button>
+            <button class="nav-item" data-tab="feed">🌾 Feed</button>
+            <button class="nav-item" data-tab="vaccine">💉 Vaccine</button>
+            <button class="nav-item" data-tab="milk">🥛 Milk</button>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+                  </html>
